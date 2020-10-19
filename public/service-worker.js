@@ -1,6 +1,6 @@
-console.log("This is the service worker: ");
+console.log("This is the service worker");
 
-const CACHE_NAME = "static-cache-v3";
+const CACHE_NAME = "static-cache-v2";
 const DATA_CACHE_NAME = "data-cache-v1";
 
 const FILES_TO_CACHE = [
@@ -55,7 +55,7 @@ self.addEventListener("fetch", function(event) {
                     if (response.status === 200) {
                         cache.put(event.request.url, response.clone());
                     }
-
+                    
                     return response;
                 })
                 .catch(error => {
