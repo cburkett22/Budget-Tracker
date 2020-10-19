@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const compression = require("compression");
 const path = require("path");
 
-const PORT = process.env.PORT || 3005;
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
@@ -29,10 +29,10 @@ mongoose.connect(
 // routes
 app.use(require("./routes/api.js"));
 
-app.listen(PORT, () => {
-  console.log(`App running on port ${PORT}!`);
-});
-
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "./public/index.html"));
+});
+
+app.listen(PORT, () => {
+  console.log(`App running on port ${PORT}!`);
 });
