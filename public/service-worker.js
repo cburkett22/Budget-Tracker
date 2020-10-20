@@ -1,4 +1,4 @@
-console.log("This is the service worker: ");
+console.log("This is the service worker");
 
 const CACHE_NAME = "static-cache-v2";
 const DATA_CACHE_NAME = "data-cache-v1";
@@ -13,15 +13,16 @@ const FILES_TO_CACHE = [
     "/icons/icon-512x512.png",
 ];
 
-self.addEventListener("install", function(event) {
-    event.waitUntil(
+self.addEventListener("install", function(evt) {
+    //general listener use this or the other two
+    evt.waitUntil(
         caches.open(CACHE_NAME).then(cacheObj => {
             console.log("Cached successfully!");
             return cacheObj.addAll(FILES_TO_CACHE);
         })
     );
 
-    event.waitUntil(
+    evt.waitUntil(
         caches.open(DATA_CACHE_NAME).then((cache) => cache.add("/api/transaction"))
     );
 
@@ -46,7 +47,7 @@ self.addEventListener("activate", function(event) {
 });
 
 self.addEventListener("fetch", function(event) {
-    if (event.request.url.includes("/api/transaction")) {
+    if (event.request.url.includes("/api/")) {
         event.respondWith(
             caches.open(DATA_CACHE_NAME).then(cache => {
                 return fetch(event.request)
@@ -54,7 +55,7 @@ self.addEventListener("fetch", function(event) {
                     if (response.status === 200) {
                         cache.put(event.request.url, response.clone());
                     }
-                    
+
                     return response;
                 })
                 .catch(error => {
